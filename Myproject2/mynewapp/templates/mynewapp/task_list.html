@@ -1,0 +1,56 @@
+{% load static %}
+<link href="{% static 'mynewapp/styles/task_list.css'%}" rel='stylesheet' type='text/css'/>
+<h1>My new tasks</h1>
+{% if tasks|length %}
+<table>
+    <tr>
+        <th>Title</th>
+        <th>Subtitle</th>
+        <th>Description</th>
+        <th>Date</th>
+        <th>Completed</th>
+        <th>Priority</th>
+    </tr>
+    {% for task in tasks %}
+    <tr class="{% if task.priority == 'Important' or task.priority == 'Critical' %}important-task{% endif %}">
+        <td>{{task.title}}</td>
+        <td>{{task.subtitle}}</td>
+        <td>{{task.description}}</td>
+        <td>{{task.creation_date}}</td>
+        <td>{{task.is_completed}}</td>
+        <td>{{task.priority}}</td>
+        <td>
+            {% if task.priority != 'Critical'%}
+            <form action="{% url 'delete_task' task.id %}" method='POST'>
+            {% csrf_token %}
+            <button>Delete task</button>
+        </form>
+            {% else %}
+            <span>--</span>
+            {% endif %}
+        </td>
+        <td>
+            <form action="{% url 'view_task' task.id %}" method='POST'>
+            {% csrf_token %}
+            <button>View task</button>
+        </form>
+        </td>
+        <td>
+            <form action="{% url 'edit_task_form' task.id %}" method='GET'>
+            {% csrf_token %}
+            <button>Edit task</button>
+        </form>
+        </td>
+        <td>
+            <form action="{% url 'copy_task' task.id %}" method='POST'>
+            {% csrf_token %}
+            <button>Copy task</button>
+        </form>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>No tasks</p>
+{% endif %}
+<a href= "{% url 'new_task_form' %}">Add new task</a>

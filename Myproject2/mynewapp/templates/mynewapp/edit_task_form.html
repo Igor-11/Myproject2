@@ -1,0 +1,13 @@
+<h1>Edit task</h1>
+<form action="{% url 'edit_task_form' task.id %}" method = 'POST'>
+    {% csrf_token %}
+    <input type='text' name='title' placeholder='Enter title' value='{{task.title}}'/>
+    <input type='text' name='subtitle' placeholder='Enter subtitle' value='{{task.subtitle}}'/>
+    <textarea name='description' placeholder='Enter description'>{{task.description}}</textarea>
+    <select name='priority'>
+        {% for priority_type in priority_types %}
+            <option value='{{priority_type.0}}' {% ifequal priority_type.0 task.priority %}selected{% endifequal %}>{{priority_type.1}}</option>
+        {% endfor %}
+    </select>
+    <button>Edit task</button>
+</form>
