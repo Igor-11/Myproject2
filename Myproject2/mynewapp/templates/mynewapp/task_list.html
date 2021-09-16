@@ -2,6 +2,10 @@
 <link href="{% static 'mynewapp/styles/task_list.css'%}" rel='stylesheet' type='text/css'/>
 <h1>My new tasks</h1>
 {% if new_tasks|length %}
+<form action="{% url 'delete_all' is_completed=0 %}" method='POST'>
+    {% csrf_token %}
+    <button>Delete all</button>
+</form>
 <table class="task-table">
     <tr>
         <th>Title</th>
@@ -16,7 +20,9 @@
     {% for task in new_tasks %}
     <tr class="{% if task.priority == 'Important' or task.priority == 'Critical' %}important-task{% endif %}">
         <td>{{task.title}}</td>
-        <td>{{task.subtitle}}</td>
+        <td>
+            {{task.subtitle|default:'-----'}}
+        </td>
         <td>{{task.description}}</td>
         <td>{{task.creation_date}}</td>
         <td>{{task.is_completed}}</td>
@@ -69,6 +75,7 @@
     </tr>
     {% endfor %}
 </table>
+<p>New tasks: {{new_tasks|length}}</p>
 {% else %}
 <p>No tasks</p>
 {% endif %}
@@ -76,6 +83,10 @@
 
 <h1>Completed tasks</h1>
 {% if completed_tasks|length %}
+<form action="{% url 'delete_all' is_completed=1 %}" method='POST'>
+    {% csrf_token %}
+    <button>Delete all</button>
+</form>
 <table class="task-table">
     <tr>
         <th>Title</th>
@@ -104,6 +115,7 @@
     </tr>
     {% endfor %}
 </table>
+<p>Completed tasks: {{completed_tasks|length}}</p>
 {% else %}
 <p>No completed tasks</p>
 {% endif %}

@@ -1,13 +1,28 @@
-<h1>Add new task</h1>
-<form action="{% url 'save_new_task' %}" method = 'POST'>
+{% load static %}
+<link href="{% static 'mynewapp/styles/form_styles.css'%}" rel='stylesheet' type='text/css'/>
+<link href="{% static 'mynewapp/styles/buttons.css'%}" rel='stylesheet' type='text/css'/>
+<h1 class='center-form-header'>Add new task</h1>
+<form class='center-form  form-with-border' action="{% url 'save_new_task' %}" method = 'POST'>
     {% csrf_token %}
-    <input type='text' name='title' placeholder='Enter title'/>
-    <input type='text' name='subtitle' placeholder='Enter subtitle'/>
-    <textarea name='description' placeholder='Enter description'></textarea>
-    <select name='priority'>
-        {% for priority_type in priority_types %}
-            <option value='{{priority_type.0}}'>{{priority_type.1}}</option>
-        {% endfor %}
-    </select>
-    <button>Save task</button>
+    <div class="form-element">
+        <label>Task title</label>
+        <input type='text' name='title' placeholder='Enter title' required/>
+    </div>
+    <div class="form-element">
+        <label>Task subtitle</label>
+        <input type='text' name='subtitle' placeholder='Enter subtitle'/>
+    </div>
+    <div class="form-element">
+        <label>Task description</label>
+        <textarea name='description' placeholder='Enter description' required></textarea>
+    </div>
+    <div class="form-element">
+        <label>Task priority</label>
+        <select name='priority' required>
+            {% for priority_type in priority_types %}
+                <option value='{{priority_type.0}}'>{{priority_type.1}}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <button class='button primary-button'>Save task</button>
 </form>

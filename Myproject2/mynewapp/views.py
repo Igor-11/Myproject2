@@ -70,6 +70,12 @@ def finish_task(request,pk):
     task.save()
     return HttpResponseRedirect(reverse('tasks_list'))
 
+def delete_all(request, is_completed):
+    task = Task.objects.filter(is_completed=bool(is_completed)).delete()
+    return HttpResponseRedirect(reverse('tasks_list'))
+
+
+
 
 
     

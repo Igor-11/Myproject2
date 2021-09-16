@@ -1,13 +1,28 @@
-<h1>Edit task</h1>
-<form action="{% url 'edit_task_form' task.id %}" method = 'POST'>
+{% load static %}
+<link href="{% static 'mynewapp/styles/form_styles.css'%}" rel='stylesheet' type='text/css'/>
+<link href="{% static 'mynewapp/styles/buttons.css'%}" rel='stylesheet' type='text/css'/>
+<h1 class='center-form-header'>Edit task</h1>
+<form class='center-form  form-with-border' action="{% url 'edit_task_form' task.id %}" method = 'POST'>
     {% csrf_token %}
-    <input type='text' name='title' placeholder='Enter title' value='{{task.title}}'/>
-    <input type='text' name='subtitle' placeholder='Enter subtitle' value='{{task.subtitle}}'/>
-    <textarea name='description' placeholder='Enter description'>{{task.description}}</textarea>
-    <select name='priority'>
+    <div class='form-element'>
+        <label>Enter title</label>
+        <input type='text' name='title' placeholder='Enter title' value='{{task.title}}' required/>
+    </div>
+    <div class='form-element'>
+        <label>Enter subtitle</label>
+        <input type='text' name='subtitle' placeholder='Enter subtitle' value='{{task.subtitle}}'/>
+    </div>
+    <div class='form-element'>
+        <label>Enter description</label>
+        <textarea name='description' placeholder='Enter description' required>{{task.description}}</textarea>
+    </div>
+    <div class='form-element'>
+        <label>Enter priority</label>
+        <select name='priority' required>
         {% for priority_type in priority_types %}
             <option value='{{priority_type.0}}' {% ifequal priority_type.0 task.priority %}selected{% endifequal %}>{{priority_type.1}}</option>
         {% endfor %}
     </select>
-    <button>Edit task</button>
+    </div>
+    <button class='button primary-button'>Edit task</button>
 </form>
