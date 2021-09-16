@@ -1,8 +1,8 @@
 {% load static %}
 <link href="{% static 'mynewapp/styles/task_list.css'%}" rel='stylesheet' type='text/css'/>
 <h1>My new tasks</h1>
-{% if tasks|length %}
-<table>
+{% if new_tasks|length %}
+<table class="task-table">
     <tr>
         <th>Title</th>
         <th>Subtitle</th>
@@ -10,8 +10,10 @@
         <th>Date</th>
         <th>Completed</th>
         <th>Priority</th>
+        <th>Copy</th>
+        <th colspan='5'>Actions</th>
     </tr>
-    {% for task in tasks %}
+    {% for task in new_tasks %}
     <tr class="{% if task.priority == 'Important' or task.priority == 'Critical' %}important-task{% endif %}">
         <td>{{task.title}}</td>
         <td>{{task.subtitle}}</td>
@@ -19,6 +21,13 @@
         <td>{{task.creation_date}}</td>
         <td>{{task.is_completed}}</td>
         <td>{{task.priority}}</td>
+        <td>
+            {% if task.copy_from_id is None %}
+                Original({{task.number_of_copies}} copies)
+            {% else %}
+                Copy
+            {% endif %}
+        </td>
         <td>
             {% if task.priority != 'Critical'%}
             <form action="{% url 'delete_task' task.id %}" method='POST'>
@@ -42,9 +51,19 @@
         </form>
         </td>
         <td>
+            {% if task.copy_from_id is None %}
             <form action="{% url 'copy_task' task.id %}" method='POST'>
             {% csrf_token %}
             <button>Copy task</button>
+        </form>
+             {% else %}
+             <p>Can not make copy from copy</p>
+             {% endif %}
+        </td>
+        <td>
+            <form action="{% url 'finish_task' task.id %}" method='POST'>
+            {% csrf_token %}
+            <button>Finish task</button>
         </form>
         </td>
     </tr>
@@ -54,3 +73,37 @@
 <p>No tasks</p>
 {% endif %}
 <a href= "{% url 'new_task_form' %}">Add new task</a>
+
+<h1>Completed tasks</h1>
+{% if completed_tasks|length %}
+<table class="task-table">
+    <tr>
+        <th>Title</th>
+        <th>Subtitle</th>
+        <th>Description</th>
+        <th>Date</th>
+        <th>Completed</th>
+        <th>Priority</th>
+        <th>Copy</th>
+    </tr>
+    {% for task in completed_tasks %}
+    <tr class="{% if task.priority == 'Important' or task.priority == 'Critical' %}important-task{% endif %}">
+        <td>{{task.title}}</td>
+        <td>{{task.subtitle}}</td>
+        <td>{{task.description}}</td>
+        <td>{{task.creation_date}}</td>
+        <td>{{task.is_completed}}</td>
+        <td>{{task.priority}}</td>
+        <td>
+            {% if task.copy_from_id is None %}
+                Original({{task.number_of_copies}} copies)
+            {% else %}
+                Copy
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>No completed tasks</p>
+{% endif %}

@@ -1,4 +1,23 @@
-.important-task {
+.task-table {
+    width: 100%;
+    border: 2px solid black;
+    border-collapse: collapse;
+}
+
+.task-table th {
+    font-weight: bold;
+    padding: 8px;
+    background: lightgray;
+    border: 1px solid gray;
+}
+
+.task-table td {
+    padding: 8px;
+    border: 1px solid gray;
+    background: lightyellow;
+}
+
+.task-table .important-task td {
     background: red;
     color: white;
 }

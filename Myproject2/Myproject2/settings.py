@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'mynewapp.apps.MynewappConfig'
+    'mynewapp.apps.MynewappConfig',
+    'django_crontab'
 ]
 
 MIDDLEWARE = [
@@ -126,3 +127,7 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CRONJOBS =[
+    ('*/2 * * * *', 'mynewapp.cron.delete_completed_tasks')
+]

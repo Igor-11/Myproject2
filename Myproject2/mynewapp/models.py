@@ -9,4 +9,4 @@ class Task(models.Model):
     creation_date = models.DateTimeField(auto_now_add=True)
     is_completed = models.BooleanField(default=False)
     priority = models.CharField(max_length=200, choices=priorities.PRIORITY_TYPES)
-    copy_from = models.ForeignKey('self',null=True, on_delete=models.CASCADE)
+    copy_from = models.ForeignKey('self',null=True, on_delete=models.CASCADE, db_column='copy_from')

@@ -4,11 +4,14 @@ from .constants import priorities
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.forms.models import model_to_dict
+from django.db.models import Count
 
 def get_all_tasks(request):
-    tasks = Task.objects.all()
+    tasks = Task.objects.annotate(number_of_copies=Count('task'))
     tasks = list(map(lambda task: {**(task.__dict__),'priority':list(filter(lambda priority: priority[0] == task.priority, priorities.PRIORITY_TYPES))[0][1]}, tasks))
-    context = {'tasks' : tasks}
+    new_tasks = list(filter(lambda task: not task['is_completed'], tasks))
+    completed_tasks = list(filter(lambda task: task['is_completed'], tasks))
+    context = {'new_tasks' : new_tasks, 'completed_tasks': completed_tasks}
     return render(request, 'mynewapp/task_list.html', context)
 
 def create_new_task_form(request):
@@ -53,12 +56,20 @@ def edit_task_form(request, pk):
 
 def copy_task(request, pk):
     task = Task.objects.get(pk=pk)
+    old_task_id = task.id
     task.id = None
     task.save()
+    copied_task = Task.objects.get(pk=task.id)
+    copied_task.copy_from = Task.objects.get(pk=old_task_id)
+    copied_task.save()
+    return HttpResponseRedirect(reverse('tasks_list'))
+
+def finish_task(request,pk):
     task = Task.objects.get(pk=pk)
-    task.copy_from = task
+    task.is_completed = True
     task.save()
     return HttpResponseRedirect(reverse('tasks_list'))
+
 
 
     
