@@ -1,0 +1,16 @@
+.button {
+    background: none;
+    padding: 8px;
+    border-radius: 8px;
+    border: none;
+}
+
+.primary-button {
+    background: rgb(2, 2, 99);
+    color: rgb(245, 238, 238);
+}
+
+.primary-button:hover {
+    cursor: pointer;
+    background: rgb(5, 5, 185);
+}

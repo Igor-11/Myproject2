@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
-
+import os
 from pathlib import Path
 from django.conf.locale.en import formats as english_formats
 english_formats.DATETIME_FORMAT = 'd/m/Y H:i:s'
@@ -131,3 +131,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CRONJOBS =[
     ('*/2 * * * *', 'mynewapp.cron.delete_completed_tasks')
 ]
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
